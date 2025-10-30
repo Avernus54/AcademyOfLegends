@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 public class Main {
 
     public static void main(String[] args) {
-        // Show the menu first
+        // Show welcome Screen
         new WelcomeScreen();
     }
 

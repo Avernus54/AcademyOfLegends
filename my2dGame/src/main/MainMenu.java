@@ -5,11 +5,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MainMenu extends JFrame {
-private String username;
+
+    private String username;
+
     public MainMenu(String username) {
-    	  this.username = username;
-    	// Frame setup
-        setTitle("Academy of Legends - Menu");
+        this.username = username;
+
+        // Frame setup
+        setTitle("Academy of Legends - Main Menu");
         setSize(768, 576);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -28,27 +31,32 @@ private String username;
         panel.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
 
         // Title
-        JLabel title = new JLabel("ACADEMY OF LEGENDS", SwingConstants.CENTER);
-        title.setFont(new Font("Rocketfuel", Font.BOLD, 38));
+        JLabel title = new JLabel("WELCOME, " + username.toUpperCase(), SwingConstants.CENTER);
+        title.setFont(new Font("Rocketfuel", Font.BOLD, 34));
         title.setForeground(Color.BLACK);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Buttons
         JButton btnNewGame = makeButton("New Game");
         JButton btnDifficulty = makeButton("Difficulty");
-        JButton btnSetting = makeButton("Setting");
+        JButton btnSetting = makeButton("Settings");
         JButton btnLogout = makeButton("Logout");
 
         // Actions
         btnNewGame.addActionListener(e -> {
-            dispose(); // close menu window
-            // Start your existing game
-            Main.startGameWindow();
+            dispose();
+            Main.startGameWindow(); // Start game (you already have this method)
         });
 
         btnDifficulty.addActionListener(e -> JOptionPane.showMessageDialog(this, "Difficulty settings coming soon!"));
-        btnSetting.addActionListener(e -> JOptionPane.showMessageDialog(this, "Settings coming soon!"));
-        btnLogout.addActionListener(e -> System.exit(0));
+        btnSetting.addActionListener(e -> {
+            dispose();
+            new SettingsMenu(username); // Pass username to settings
+        });
+        btnLogout.addActionListener(e -> {
+            dispose();
+            new WelcomeScreen(); // Go back to welcome screen
+        });
 
         // Add components
         panel.add(title);
@@ -77,7 +85,7 @@ private String username;
         ));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Hover color effect
+        // Hover effect
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 button.setBackground(new Color(255, 230, 130));
