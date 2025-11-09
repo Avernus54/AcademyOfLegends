@@ -19,6 +19,7 @@ public class Player extends Entity{
 	
 	public final int ScreenX;
 	public final int ScreenY;
+	int haskey = 0;
 	
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
@@ -30,7 +31,9 @@ public class Player extends Entity{
 		
 		solidArea = new Rectangle();
 		solidArea.x = 8;
-		solidArea.y = 12;
+		solidArea.y = 14;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32;
 		solidArea.height = 32;
 		
@@ -45,14 +48,14 @@ public class Player extends Entity{
 	}
 	public void getPlayerImage() {
 		try {
-			up1 = ImageIO.read(getClass() .getResourceAsStream("/player/up.gif"));
-			up2 = ImageIO.read(getClass() .getResourceAsStream("/player/up.gif"));
-			down1 = ImageIO.read(getClass() .getResourceAsStream("/player/down.gif"));
-			down2 = ImageIO.read(getClass() .getResourceAsStream("/player/down.gif"));
-			right1 = ImageIO.read(getClass() .getResourceAsStream("/player/right.gif"));
-			right2 = ImageIO.read(getClass() .getResourceAsStream("/player/right.gif"));
-			left1 = ImageIO.read(getClass() .getResourceAsStream("/player/left.gif"));
-			left2 = ImageIO.read(getClass() .getResourceAsStream("/player/left.gif"));
+			up1 = ImageIO.read(getClass() .getResourceAsStream("/player/up(1).png"));
+			up2 = ImageIO.read(getClass() .getResourceAsStream("/player/up(2).png"));
+			down1 = ImageIO.read(getClass() .getResourceAsStream("/player/down(1).png"));
+			down2 = ImageIO.read(getClass() .getResourceAsStream("/player/down(2).png"));
+			right1 = ImageIO.read(getClass() .getResourceAsStream("/player/left(1).png"));
+			right2 = ImageIO.read(getClass() .getResourceAsStream("/player/left(2).png"));
+			left1 = ImageIO.read(getClass() .getResourceAsStream("/player/right(2).png"));
+			left2 = ImageIO.read(getClass() .getResourceAsStream("/player/right(1).png"));
 			
 			
 			
@@ -60,7 +63,8 @@ public class Player extends Entity{
 			e.printStackTrace();
 		}
 	}
-	public void update() {
+	public void update
+() {
 		
 		if(keyH.upPressed == true || keyH.downPressed == true || 
 				keyH.leftPressed == true || keyH.rightPressed == true) {
@@ -78,6 +82,11 @@ public class Player extends Entity{
 		// CHECK TILE COLLISION
 		collisionOn = false;
 		gp.cChecker.checkTile(this);
+		
+		//check object collision
+		int objIndex = gp.cChecker.checkedObject(this, true);
+		pickUpObject(objIndex);
+	
 		
 		//IF COLLISION IS FALSE, PLAYER CAN MOVE
 		if(collisionOn == false) {
@@ -99,6 +108,35 @@ public class Player extends Entity{
 			spriteCounter = 0;
 		}
 	}
+	}
+	public void pickUpObject(int i) {
+		
+		if(i != 999) {
+			String objectName = gp.obj[i].name;
+			
+			switch(objectName) {
+			case "key":
+				gp.playSE(1);
+				haskey++;
+				gp.obj[i] = null;
+				System.out.println("key" + haskey);
+				break;
+			case "door":
+				gp.playSE(4);
+				if(haskey > 0) {
+					gp.obj[i] = null;
+					haskey--;
+					
+				}
+				System.out.println("key" + haskey);
+				break;
+			case "Boots":
+				gp.playSE(3);
+				speed +=2;
+				gp.obj[i] = null;
+				break;
+			}
+		}
 	}
 	public void draw(Graphics2D g2) {
 		//g2.setColor(Color.blue);
