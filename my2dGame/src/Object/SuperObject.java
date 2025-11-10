@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 
+//myyy
 public class SuperObject {
 	
 	public BufferedImage image;

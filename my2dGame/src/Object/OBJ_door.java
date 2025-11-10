@@ -3,6 +3,8 @@ package Object;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+//myyy
+
 
 public class OBJ_door extends SuperObject {
 	
