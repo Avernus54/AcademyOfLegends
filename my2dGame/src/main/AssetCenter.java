@@ -1,11 +1,6 @@
 package main;
 
-import Object.OBJ_Boots;
-import Object.OBJ_chest;
-import Object.OBJ_door;
-import Object.OBJ_key;
-
-//Myyyy
+import Entity.NPC_Teacher;
 
 public class AssetCenter {
 	GamePanel gp;
@@ -15,31 +10,16 @@ public class AssetCenter {
 		
 	}
 	public void setObject() {
-		gp.obj[1] = new OBJ_chest();
-		gp.obj[1].worldX = 20 * gp.tileSize;
-		gp.obj[1].worldY = 8 * gp.tileSize;
-		
-		gp.obj[2] = new OBJ_Boots();
-		gp.obj[2].worldX = 26 * gp.tileSize;
-		gp.obj[2].worldY = 45 * gp.tileSize;
-		
-		gp.obj[3] = new OBJ_key();
-		gp.obj[3].worldX = 36 * gp.tileSize;
-		gp.obj[3].worldY = 30 * gp.tileSize;
-		
-		gp.obj[4] = new OBJ_chest();
-		gp.obj[4].worldX = 44 * gp.tileSize;
-		gp.obj[4].worldY = 14 * gp.tileSize;
-		
-
-		gp.obj[5] = new OBJ_door();
-		gp.obj[5].worldX = 19 * gp.tileSize;
-		gp.obj[5].worldY = 11 * gp.tileSize;
-		
 		
 		
 		
 		
 	}
+	public void setNPC() {
+		gp.npc[0] = new NPC_Teacher(gp);
+		gp.npc[0].worldX = gp.tileSize*21;
+		gp.npc[0].worldY = gp.tileSize*21;
+	}
+	
 
 }

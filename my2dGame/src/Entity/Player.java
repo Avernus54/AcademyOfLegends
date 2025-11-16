@@ -14,16 +14,15 @@ import main.KeyHandler;
 
 public class Player extends Entity{
 
-	GamePanel gp;
 	KeyHandler keyH;
 	
 	public final int ScreenX;
-	public final int ScreenY;
-	public int haskey = 0;
-	
+	public final int ScreenY;	
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
-		this.gp = gp;
+		
+		super(gp);
+		
 		this.keyH = keyH;
 		
 		ScreenX = gp.screenWidth/2 - (gp.tileSize/2);
@@ -86,8 +85,9 @@ public class Player extends Entity{
 		//check object collision
 		int objIndex = gp.cChecker.checkedObject(this, true);
 		pickUpObject(objIndex);
-	
-		
+		//CHECK NPC COLLISION
+		int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+		interactNPC(npcIndex);
 		//IF COLLISION IS FALSE, PLAYER CAN MOVE
 		if(collisionOn == false) {
 			switch(direction) {
@@ -112,42 +112,17 @@ public class Player extends Entity{
 	public void pickUpObject(int i) {
 		
 		if(i != 999) {
-			String objectName = gp.obj[i].name;
-			
-			switch(objectName) {
-			case "key":
-				gp.playSE(1);
-				haskey++;
-				gp.obj[i] = null;
-				gp.ui.showMessage("you got a key!");
-				break;
-			case "door":
-				gp.playSE(4);
-				if(haskey > 0) {
-					gp.obj[i] = null;
-					haskey--;
-					gp.ui.showMessage("you open the door!");
-					
-				}else {
-					gp.ui.showMessage("you need a key!");
-				}
-				
-				break;
-				//anhi ra ko kutob 09/11/2025
-			case "Boots":
-				gp.playSE(3);
-				speed +=2;
-				gp.obj[i] = null;
-				gp.ui.showMessage("speed up!");
-				break;
-			case "chest":
-				gp.ui.gameFinished = true;
-				gp.stopMusic();
-				gp.playSE(2);
-				break;
-			}
+	
 		}
 	}
+	
+	public void interactNPC (int i) {
+		if(i != 999) {
+			gp.gameState = gp.dialogueState;
+			gp.npc[i].speak();
+		}
+	}
+	
 	public void draw(Graphics2D g2) {
 		//g2.setColor(Color.blue);
 		
