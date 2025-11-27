@@ -39,6 +39,17 @@ public class NPC_Teacher extends Entity {
 }
 public void setDialogue() {
 		dialogues[0] = "Hello, pre.";
+		dialogues[1] = "Nagkaon naka?";
+		dialogues[2] = "Kaon na";
+		dialogues[3] = "or kan on tka";
+		dialogues[4] = "joke";
+		dialogues[5] = "kinan anay ta";
+		dialogues[6] = "Hello, pre.";
+		dialogues[7] = "Hello, pre.";
+		dialogues[8] = "Hello, pre.";
+		dialogues[9] = "Hello, pre.";
+		dialogues[10] = "Hello, pre.";
+		
 	}
 	public void setAction() {
 		
@@ -65,6 +76,26 @@ public void setDialogue() {
 		
 	}
 	public void speak() {
-		gp.ui.currentDialogue = dialogues[0];
+		if (dialogues[dialogueIndex] == null){
+			dialogueIndex = 0;
+			
+		}
+		gp.ui.currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+		
+		switch(gp.player.direction) {
+		case"up":
+			direction = "down";
+			break;
+		case"down":
+			direction = "up";
+			break;
+		case"left":
+			direction = "right";
+			break;
+		case"right":
+			direction = "left";
+			break;
+		}
 	}
 }

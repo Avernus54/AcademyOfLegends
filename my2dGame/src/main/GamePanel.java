@@ -11,6 +11,7 @@ import Entity.Player;
 import Object.SuperObject;
 import tile.TileManager;
 
+
 public class GamePanel extends JPanel implements Runnable{
 	/**
 	 * 
@@ -34,13 +35,14 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler(this);
+	public KeyHandler keyH = new KeyHandler(this);
 	Sounds soundeffects = new Sounds();
 	Sounds Music = new Sounds();
 	
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetCenter aSetter = new AssetCenter(this);
 	public UserInterface ui = new UserInterface(this);
+	public EventHandler eHandler = new EventHandler(this);
 	Thread gameThread;
 	
 	//ang entity og ang object

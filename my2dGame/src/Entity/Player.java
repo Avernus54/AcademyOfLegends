@@ -44,6 +44,10 @@ public class Player extends Entity{
 		worldY = gp.tileSize * 21;
 		speed = 4;
 		direction = "down";
+		
+		//player status
+		maxlife = 6;
+		life = maxlife;
 	}
 	public void getPlayerImage() {
 		try {
@@ -62,8 +66,7 @@ public class Player extends Entity{
 			e.printStackTrace();
 		}
 	}
-	public void update
-() {
+	public void update() {
 		
 		if(keyH.upPressed == true || keyH.downPressed == true || 
 				keyH.leftPressed == true || keyH.rightPressed == true) {
@@ -88,6 +91,10 @@ public class Player extends Entity{
 		//CHECK NPC COLLISION
 		int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 		interactNPC(npcIndex);
+		
+		//Check Event
+		gp.eHandler.checkEvent();
+		gp.keyH.enterPressed = false;
 		//IF COLLISION IS FALSE, PLAYER CAN MOVE
 		if(collisionOn == false) {
 			switch(direction) {
@@ -118,9 +125,15 @@ public class Player extends Entity{
 	
 	public void interactNPC (int i) {
 		if(i != 999) {
-			gp.gameState = gp.dialogueState;
-			gp.npc[i].speak();
+			
+			if(gp.keyH.enterPressed == true) {
+				gp.gameState = gp.dialogueState;
+				gp.npc[i].speak();
+				
+			}
+			
 		}
+		
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -165,6 +178,6 @@ public class Player extends Entity{
 			}
 			break;
 		}
-		g2.drawImage(image, ScreenX, ScreenY, gp.tileSize,gp.tileSize, null);
+		g2.drawImage(image, ScreenX, ScreenY,gp.tileSize,gp.tileSize, null);
 	}
 }
