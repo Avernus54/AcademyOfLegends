@@ -20,7 +20,7 @@ public class EventHandler {
 		eventRectDefaultY = eventRect.y;
 	}
 	public void checkEvent() {
-//		if(hit(12,1,"right") == true) {damagePit(gp.dialogueState);}
+		if(hit(6,15,"left") == true) {damagePit(gp.dialogueState);}
 		if(hit(12,1,"right") == true) {teleport(gp.dialogueState);}
 		if(hit(12,12,"left") == true) {healingPool(gp.dialogueState);}
 		
@@ -55,7 +55,7 @@ public class EventHandler {
 	}
 	public void damagePit(int gameState) {
 		gp.gameState = gameState;
-		gp.ui.currentDialogue = "you fell into the pit!!";
+		gp.ui.currentDialogue = "you step into the pit!!";
 		gp.player.life -=1;
 	}
 	public void healingPool(int gameState) {

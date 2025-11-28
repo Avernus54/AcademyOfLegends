@@ -46,6 +46,11 @@ public class TileManager {
 			setup(11,"topleftsideG",true);
 			setup(12,"toprightsideG",true);
 			setup(13,"lowStraightW",true);
+			setup(14,"edge",true);
+			setup(15,"downedges",true);
+			setup(16,"leftdownedges",true);
+			setup(17,"rightedge",true);
+			setup(18,"pitfall",false);
 			
 			
 			
