@@ -14,7 +14,7 @@ public class WelcomeScreen extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Background
+        // Background Panel
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -23,8 +23,19 @@ public class WelcomeScreen extends JFrame {
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
+        panel.setBorder(BorderFactory.createEmptyBorder(60, 150, 60, 150));
+
+        // -----------------------------------------------------
+        // 🔥 ADD LOGO HERE
+        // -----------------------------------------------------
+        ImageIcon icon = new ImageIcon(getClass().getResource("/logo.png"));
+ 
+        Image scaled = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaled));
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // -----------------------------------------------------
 
         JLabel title = new JLabel("ACADEMY OF LEGENDS", SwingConstants.CENTER);
         title.setFont(new Font("Rocketfuel", Font.BOLD, 36));
@@ -48,14 +59,17 @@ public class WelcomeScreen extends JFrame {
             String username = txtUsername.getText().trim();
             if (!username.isEmpty()) {
                 dispose();
-                new MainMenu(username); // Pass username to next screen
+                new MainMenu(username); 
             } else {
                 JOptionPane.showMessageDialog(this, "Please enter your username first!");
             }
         });
 
+        // Add components to panel
+        panel.add(logoLabel);                  // 🔥 add logo first
+        panel.add(Box.createVerticalStrut(20));
         panel.add(title);
-        panel.add(Box.createVerticalStrut(60));
+        panel.add(Box.createVerticalStrut(40));
         panel.add(txtUsername);
         panel.add(Box.createVerticalStrut(30));
         panel.add(btnEnter);
