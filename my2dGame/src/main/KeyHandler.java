@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 
 public class KeyHandler implements KeyListener {
 
@@ -24,53 +25,76 @@ public class KeyHandler implements KeyListener {
         
        //Play State
         if(gp.gameState == gp.playState) {
-        	  // W or UP ARROW
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                upPressed = true;
-            }
-
-            // S or DOWN ARROW
-            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                downPressed = true;
-            }
-
-            // A or LEFT ARROW
-            if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
-                leftPressed = true;
-            }
-
-            // D or RIGHT ARROW
-            if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
-                rightPressed = true;
-            }
-            if (code == KeyEvent.VK_P) {
-            	
-            	gp.gameState = gp.pauseState;
-
-            }
-            if (code == KeyEvent.VK_ENTER) {
-            	enterPressed = true;
-            }
-
-                else if (gp.gameState == gp.pauseState) {
-                	gp.gameState = gp.pauseState;
-                }
+        	  playState(code);
             }
         
         //Pause State
-        if(gp.gameState == gp.pauseState) {
-        	
+        else if(gp.gameState == gp.pauseState) {
+        	pauseState(code);
         }
         //Dialogue State
         else if(gp.gameState == gp.dialogueState) {
-        	if(code == KeyEvent.VK_ENTER) {
-        		gp.gameState = gp.playState;
+        	pauseState(code);
         }
+        else if(gp.gameState == gp.characterState) {
+        	characterState(code);
         }
-      
+
     }
 
-    @Override
+    
+    
+    public void playState(int code) {
+    	// W or UP ARROW
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            upPressed = true;
+        }
+
+        // S or DOWN ARROW
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            downPressed = true;
+        }
+
+        // A or LEFT ARROW
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            leftPressed = true;
+        }
+
+        // D or RIGHT ARROW
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            rightPressed = true;
+        }
+         if (code == KeyEvent.VK_P) {
+        	gp.gameState = gp.pauseState; 
+        	}
+        if (code == KeyEvent.VK_I) {
+        	
+        	gp.gameState = gp.characterState;
+        }
+      
+        if (code == KeyEvent.VK_SPACE) {
+        	enterPressed = true;
+        }
+
+            else if (gp.gameState == gp.pauseState) {
+            	gp.gameState = gp.pauseState;
+            }
+    }
+    public void pauseState(int code) {
+    	if(code == KeyEvent.VK_P) {
+    		gp.gameState = gp.playState;
+    	}
+    }
+    public void dialogueState(int code) {
+    	if(code == KeyEvent.VK_SPACE) {
+    		gp.gameState = gp.playState;
+    	}
+    }
+    public void characterState(int code) {
+    	if (code == KeyEvent.VK_I) {
+    		gp.gameState = gp.playState;
+    	}
+ }
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 

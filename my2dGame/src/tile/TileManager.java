@@ -27,13 +27,15 @@ public class TileManager {
 		mapTileNum = new int [gp.maxWorldCol][gp.maxWorldRow];
 		getTileImage();
 		loadMap("/maps/worldmap.txt");
+		
+		
 	}
 	
 	public void getTileImage() {
 			
 			
 			setup(0,"trees",true);
-			setup(1,"stone",true);
+			setup(1,"new stone",true);
 			setup(2,"water",true);
 			setup(3,"Grass2",false);
 			setup(4,"straightWater",true);

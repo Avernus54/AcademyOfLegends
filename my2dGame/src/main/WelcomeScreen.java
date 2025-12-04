@@ -30,7 +30,7 @@ public class WelcomeScreen extends JFrame {
         // -----------------------------------------------------
         // 🔥 ADD LOGO HERE
         // -----------------------------------------------------
-        ImageIcon icon = new ImageIcon(getClass().getResource("/logo.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/logo/AOL.png"));
  
         Image scaled = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaled));

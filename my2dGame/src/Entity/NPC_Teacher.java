@@ -1,6 +1,7 @@
 package Entity;
 
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Random;
 
@@ -16,25 +17,31 @@ public class NPC_Teacher extends Entity {
 		direction = "down";
 		speed = 1;
 		
+		solidArea = new Rectangle();
+		solidArea.x = 8;
+		solidArea.y = 14;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+		solidArea.width = 29;
+		solidArea.height = 29;
+		
 		getTeacherImage();
 		setDialogue();
 	}
 	public void getTeacherImage() {
-		try {
-			up1 = ImageIO.read(getClass() .getResourceAsStream("/player/up(1).png"));
-			up2 = ImageIO.read(getClass() .getResourceAsStream("/player/up(2).png"));
-			down1 = ImageIO.read(getClass() .getResourceAsStream("/player/down(1).png"));
-			down2 = ImageIO.read(getClass() .getResourceAsStream("/player/down(2).png"));
-			right1 = ImageIO.read(getClass() .getResourceAsStream("/player/left(1).png"));
-			right2 = ImageIO.read(getClass() .getResourceAsStream("/player/left(2).png"));
-			left1 = ImageIO.read(getClass() .getResourceAsStream("/player/right(2).png"));
-			left2 = ImageIO.read(getClass() .getResourceAsStream("/player/right(1).png"));
+	
+			up1 = setup("/npc/girlDown1",gp.tileSize,gp.tileSize);
+			up2 = setup("/npc/girlDown2",gp.tileSize,gp.tileSize);
+			down1 = setup("/npc/girlUp1",gp.tileSize,gp.tileSize);
+			down2 = setup("/npc/girlUp2",gp.tileSize,gp.tileSize);
+			right1 = setup("/npc/girlRight1",gp.tileSize,gp.tileSize);
+			right2 = setup("/npc/girlRight2",gp.tileSize,gp.tileSize);
+			left1 = setup("/npc/girlLeft1",gp.tileSize,gp.tileSize);
+			left2 = setup("/npc/girlLeft2",gp.tileSize,gp.tileSize);
 			
 			
 			
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
+		
 	
 }
 public void setDialogue() {
@@ -44,11 +51,6 @@ public void setDialogue() {
 		dialogues[3] = "or kan on tka";
 		dialogues[4] = "joke";
 		dialogues[5] = "kinan anay ta";
-		dialogues[6] = "Hello, pre.";
-		dialogues[7] = "Hello, pre.";
-		dialogues[8] = "Hello, pre.";
-		dialogues[9] = "Hello, pre.";
-		dialogues[10] = "Hello, pre.";
 		
 	}
 	public void setAction() {

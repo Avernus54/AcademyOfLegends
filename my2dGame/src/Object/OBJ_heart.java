@@ -4,25 +4,18 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import Entity.Entity;
 import main.GamePanel;
 
-public class OBJ_heart extends SuperObject {
+public class OBJ_heart extends Entity {
 	GamePanel gp;
 	public OBJ_heart(GamePanel gp) {
-		this.gp = gp;
+		super(gp);
 		name = "heart";
+		image = setup("/objects/halfheart",gp.tileSize,gp.tileSize);
+		image2 = setup("/objects/whiteheart",gp.tileSize,gp.tileSize);
+		image3 = setup("/objects/wholeheart",gp.tileSize,gp.tileSize);
 		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/halfheart.png"));
-			image2 = ImageIO.read(getClass().getResourceAsStream("/objects/whiteheart.png"));
-			image3 = ImageIO.read(getClass().getResourceAsStream("/objects/wholeheart.png"));
-			image = uTool.scaleImage(image,gp.tileSize , gp.tileSize);
-			image2 = uTool.scaleImage(image2,gp.tileSize , gp.tileSize);
-			image3 = uTool.scaleImage(image3,gp.tileSize , gp.tileSize);
-			
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
 		
 	}
 
