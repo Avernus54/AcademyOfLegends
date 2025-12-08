@@ -9,11 +9,14 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import Object.OBJ_Fireball;
 import Object.OBJ_Shield;
 import Object.OBJ_Sword_NORMAL;
+import Object.OBJ_key;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
@@ -25,6 +28,9 @@ public class Player extends Entity{
 	public final int ScreenX;
 	public final int ScreenY;	
 	public boolean attackCancel = false;
+	int standCounter = 0;
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int maxInventorySize = 20;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		
@@ -43,12 +49,13 @@ public class Player extends Entity{
 		solidArea.width = 32;
 		solidArea.height = 32;
 		
-		attackArea.width = 36;
-		attackArea.height = 36;
+//		attackArea.width = 36;
+//		attackArea.height = 36;
 		
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
+		setItems();
 		
 	}
 	public void setDefaultValues() {
@@ -72,9 +79,16 @@ public class Player extends Entity{
 		currentShield = new OBJ_Shield(gp);
 		attack = getAttack();
 		defense = getDefense();
-		
-}
+		projectile = new OBJ_Fireball(gp);
+	}
+	public void setItems() {
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
+		inventory.add(new OBJ_key(gp));
+		inventory.add(new OBJ_key(gp));
+	}
 	public int getAttack() {
+		attackArea = currentWeapon.attackArea;
 		return attack = strength * currentWeapon.attackValue;
 	}
 	public int getDefense() {
@@ -100,16 +114,28 @@ public class Player extends Entity{
 	}
 	public void getPlayerAttackImage() {
 		
-			attackup1 = setup("/player/attackUp1",gp.tileSize,gp.tileSize*2);
-			attackUp2 = setup("/player/attackUp2",gp.tileSize,gp.tileSize*2);
-			attackDown1 = setup("/player/attackDown1",gp.tileSize,gp.tileSize*2);
-			attackDown2 = setup("/player/attackDown2",gp.tileSize,gp.tileSize*2);
-			attackRight1 = setup("/player/attackRight1",gp.tileSize*2,gp.tileSize);
-			attackRight2 = setup("/player/attackRight2",gp.tileSize*2,gp.tileSize);
-			attackLeft1 = setup("/player/attackLeft1",gp.tileSize*2,gp.tileSize);
-			attackLeft2 = setup("/player/attackLeft2",gp.tileSize*2,gp.tileSize);
 			
-			
+			if(currentWeapon.type == type_sword) {
+				attackup1 = setup("/player/attackUp1",gp.tileSize,gp.tileSize*2);
+				attackUp2 = setup("/player/attackUp2",gp.tileSize,gp.tileSize*2);
+				attackDown1 = setup("/player/attackDown1",gp.tileSize,gp.tileSize*2);
+				attackDown2 = setup("/player/attackDown2",gp.tileSize,gp.tileSize*2);
+				attackRight1 = setup("/player/attackRight1",gp.tileSize*2,gp.tileSize);
+				attackRight2 = setup("/player/attackRight2",gp.tileSize*2,gp.tileSize);
+				attackLeft1 = setup("/player/attackLeft1",gp.tileSize*2,gp.tileSize);
+				attackLeft2 = setup("/player/attackLeft2",gp.tileSize*2,gp.tileSize);
+			}
+
+			if(currentWeapon.type == type_axe) {
+				attackup1 = setup("/player/attackUp1",gp.tileSize,gp.tileSize*2);
+				attackUp2 = setup("/player/attackUp2",gp.tileSize,gp.tileSize*2);
+				attackDown1 = setup("/player/attackDown1",gp.tileSize,gp.tileSize*2);
+				attackDown2 = setup("/player/attackDown2",gp.tileSize,gp.tileSize*2);
+				attackRight1 = setup("/player/attackRight1",gp.tileSize*2,gp.tileSize);
+				attackRight2 = setup("/player/attackRight2",gp.tileSize*2,gp.tileSize);
+				attackLeft1 = setup("/player/attackLeft1",gp.tileSize*2,gp.tileSize);
+				attackLeft2 = setup("/player/attackLeft2",gp.tileSize*2,gp.tileSize);
+			}
 			
 	
 	}
@@ -158,7 +184,7 @@ public class Player extends Entity{
 			}
 		}
 		if(keyH.enterPressed == true && attackCancel == false) {
-		//gp.playSE(7);
+			gp.playSE(7);
 			attacking = true;
 			spriteCounter = 0;
 			
@@ -178,6 +204,15 @@ public class Player extends Entity{
 			spriteCounter = 0;
 		}
 	}
+		if (gp.keyH.shotKeyPressed == true && projectile.alive == false) {
+			
+			projectile.set(worldX, worldY, direction ,true, this);
+			
+			gp.projectileList.add(projectile);
+			
+			gp.playSE(10);
+			
+		}
 		// kailangan gawas jud nis if statement
 		if(invisible == true) {
 			invisibleCounter++;
@@ -227,11 +262,24 @@ public class Player extends Entity{
 			spriteCounter = 0;
 			attacking = false;
 		}
+		
 	}
 	public void pickUpObject(int i) {
 		
 		if(i != 999) {
-	
+			
+			String text;
+			if (inventory.size() != maxInventorySize) {
+				
+				inventory.add(gp.obj[i]);
+				gp.playSE(i);
+				text = "Got a " + gp.obj[i].name + "!";
+			}
+			else {
+				text = "you cannot carry any More!";
+			}
+			gp.ui.addMessage(text);
+			gp.obj[i]=null;
 		}
 	}
 	
@@ -242,19 +290,24 @@ public class Player extends Entity{
 			attackCancel = false;
 			gp.gameState = gp.dialogueState;
 			gp.npc[i].speak();
-			
-		
-	
 			}
 	
 		}
+	int npcIndex = gp.cChecker.checkEntity(gp.player, gp.npc);
+
+	if (npcIndex != 999) {
+	    gp.currentNPC = npcIndex;
+	    gp.gameState = gp.dialogueState;
+	    gp.npc[npcIndex].speak();
+	}
+
 	}
 		
 		
 
 	public void contactMonster(int i) {
 		if(i != 999) {
-			if(invisible == false) {
+			if(invisible == false && gp.monster[i].dying == false) {
 				//gp.playSE(6);
 				
 					int damage = attack - gp.monster[i].attack - defense;
@@ -276,7 +329,7 @@ public class Player extends Entity{
 				}
 				
 				
-//				gp.playSE(5);
+				gp.playSE(5);
 				gp.monster[i].life -= damage;
 				gp.ui.addMessage(damage + " damage");
 				gp.monster[i].invisible= true;
@@ -307,6 +360,29 @@ public class Player extends Entity{
 			gp.playSE(3);
 			gp.gameState = gp.dialogueState;
 			gp.ui.currentDialogue = "you are level" + level + "now!\n" + "you feel Stronger!";
+		}
+	}
+	public void selectedItem() {
+		
+		int itemIndex = gp.ui.getItemIndexOnSlot();
+		
+		if (itemIndex < inventory.size()) {
+			Entity selectedItem = inventory.get(itemIndex);
+			
+			if(selectedItem.type == type_sword || selectedItem.type == type_axe) {
+				currentWeapon = selectedItem;
+				attack = getAttack();
+				getPlayerAttackImage();
+			}
+			if(selectedItem.type == type_shield) {
+				currentShield = selectedItem;
+				defense = getDefense();
+			}
+			if(selectedItem.type == type_consumable) {
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
+				
+			}
 		}
 	}
 	public void draw(Graphics2D g2) {

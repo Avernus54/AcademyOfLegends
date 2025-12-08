@@ -11,6 +11,9 @@ import main.GamePanel;
 
 public class NPC_Teacher extends Entity {
 
+	
+	
+	
 	public NPC_Teacher(GamePanel gp){
 		super(gp);
 		
@@ -44,13 +47,19 @@ public class NPC_Teacher extends Entity {
 		
 	
 }
-public void setDialogue() {
+	public void setDialogue() {
 		dialogues[0] = "Hello, pre.";
 		dialogues[1] = "Nagkaon naka?";
 		dialogues[2] = "Kaon na";
 		dialogues[3] = "or kan on tka";
 		dialogues[4] = "joke";
 		dialogues[5] = "kinan anay ta";
+		
+		dialogueChoices = new String[]{
+		        "Yes ma'am",
+		        "Not yet",
+		        "Later po"
+		    };
 		
 	}
 	public void setAction() {
@@ -78,26 +87,30 @@ public void setDialogue() {
 		
 	}
 	public void speak() {
-		if (dialogues[dialogueIndex] == null){
-			dialogueIndex = 0;
-			
-		}
-		gp.ui.currentDialogue = dialogues[dialogueIndex];
-		dialogueIndex++;
-		
-		switch(gp.player.direction) {
-		case"up":
-			direction = "down";
-			break;
-		case"down":
-			direction = "up";
-			break;
-		case"left":
-			direction = "right";
-			break;
-		case"right":
-			direction = "left";
-			break;
-		}
+		super.speak();
+		gp.ui.choices = this.dialogueChoices;
+	    gp.ui.maxChoices = this.dialogueChoices.length;
+	    gp.ui.choiceIndex = 0;
+
+	    // Mark this NPC as the active one
+	    gp.currentNPC = this.gp.currentNPC; 
 	}
+	public void onDialogueChoice(int choice) {
+
+	    switch(choice) {
+	        case 0:
+	            dialogues[0] = "Thank you for helping!";
+	            break;
+	        case 1:
+	            dialogues[0] = "Oh... maybe next time.";
+	            break;
+	        case 2:
+	            dialogues[0] = "Alright, let me know later.";
+	            break;
+	    }
+
+	    // Show the result text
+	    gp.ui.currentDialogue = dialogues[0];
+	}
+
 }

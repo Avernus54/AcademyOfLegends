@@ -8,7 +8,7 @@ import main.GamePanel;
 public class MON_worms extends Entity{
 	public MON_worms(GamePanel gp) {
 		super(gp);
-		type = 2;
+		type = type_monster;
 		name = "Green Worms";
 		speed = 1;
 		maxlife = 10;

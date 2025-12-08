@@ -36,8 +36,16 @@ public class Entity {
 		
 		public int invisibleCounter = 0;
 		
-		String dialogues[] = new String[20];
-		int dialogueIndex = 0;
+		public String dialogues[] = new String[20];
+		public String[] dialogueChoices = new String[10];
+	    public int dialogueChoiceIndex = 0;
+	    
+	    
+	    public int maxMana;
+	    public int mana;
+	    public Projectiles projectile;
+	    public int useCost;
+		public int dialogueIndex = 0;
 		public Rectangle attackArea = new Rectangle(0,0,0,0);
 		boolean attacking =false;
 		public boolean alive = true;
@@ -58,12 +66,25 @@ public class Entity {
 		public int attackValue;
 		public int defenseValue;
 		
+		
+		
 		public String name;
 		public boolean collision = false;
 		public int type;// 0 = player / 1 = npc / 2 = monster		
+		public final int type_player = 0;
+		public final int type_npc  = 1;
+		public final int type_monster = 2;
+		public final int type_sword = 3;
+		public final int type_axe = 4;
+		public final int type_shield = 5;
+		public final int type_consumable = 6;
+		
+		
 		//Char status
 		public int maxlife;
 		public int life;
+		
+		public String description = "";
 		
 		
 		public Entity(GamePanel gp) {
@@ -71,7 +92,31 @@ public class Entity {
 		}
 		public void setAction() {}
 		public void damageReaction() {}
-		public void speak() {}
+		public void speak() {
+			if (dialogues[dialogueIndex] == null){
+				dialogueIndex = 0;
+				
+			}
+			gp.ui.currentDialogue = dialogues[dialogueIndex];
+			dialogueIndex++;
+			
+			switch(gp.player.direction) {
+			case"up":
+				direction = "down";
+				break;
+			case"down":
+				direction = "up";
+				break;
+			case"left":
+				direction = "right";
+				break;
+			case"right":
+				direction = "left";
+				break;
+			}
+		}
+		public void onDialogueChoice(int choice) {}
+		public void use(Entity entity) {}
 		public void update() {
 		
 			
@@ -83,8 +128,9 @@ public class Entity {
 				gp.cChecker.checkEntity(this, gp.npc);
 				gp.cChecker.checkEntity(this, gp.monster);
 				boolean contactPlayer = gp.cChecker.checkPlayer(this);
+				int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 				
-				if(this.type == 2 && contactPlayer == true) {
+				if(this.type == type_monster && contactPlayer == true) {
 					if(gp.player.invisible == false) {
 //						gp.playSE(6);
 						
@@ -196,7 +242,7 @@ public class Entity {
 		if(dyingCounter > i*6 && dyingCounter <= i*7) {changeAlpha(g2,0f);}
 		if(dyingCounter > i*7 && dyingCounter <= i*8) {changeAlpha(g2,1f);}
 		if(dyingCounter > i*8) {
-			dying = false;
+			
 			alive = false;
 		}
 	}

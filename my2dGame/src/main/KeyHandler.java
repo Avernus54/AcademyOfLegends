@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 
 public class KeyHandler implements KeyListener {
 
-	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
     GamePanel gp;
 
     
@@ -75,10 +75,11 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_SPACE) {
         	enterPressed = true;
         }
+        if (code == KeyEvent.VK_F) {
+        	shotKeyPressed = true;
+        }
 
-            else if (gp.gameState == gp.pauseState) {
-            	gp.gameState = gp.pauseState;
-            }
+            
     }
     public void pauseState(int code) {
     	if(code == KeyEvent.VK_P) {
@@ -86,13 +87,42 @@ public class KeyHandler implements KeyListener {
     	}
     }
     public void dialogueState(int code) {
-    	if(code == KeyEvent.VK_SPACE) {
+    	if (code == KeyEvent.VK_SPACE) {
     		gp.gameState = gp.playState;
     	}
-    }
+    	}
     public void characterState(int code) {
     	if (code == KeyEvent.VK_I) {
     		gp.gameState = gp.playState;
+    	}
+    	if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+    		
+    		if(gp.ui.slotRow != 0) {
+    			gp.ui.slotRow--;
+        		gp.playSE(9);
+    		}
+    	}
+    	if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+    		if(gp.ui.slotCol != 0) {
+    			gp.ui.slotCol--;
+        		gp.playSE(9);
+    		}
+    	}
+    	if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+    		if(gp.ui.slotRow != 4) {
+    			gp.ui.slotRow++;
+        		gp.playSE(9);
+    		}
+    	}
+    	if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+    		if(gp.ui.slotCol != 4) {
+    			gp.ui.slotCol++;
+        		gp.playSE(9);
+    		}
+    		
+    	}
+    	if(code == KeyEvent.VK_ENTER) {
+    		gp.player.selectedItem();
     	}
  }
     public void keyReleased(KeyEvent e) {
@@ -116,6 +146,9 @@ public class KeyHandler implements KeyListener {
         // D or RIGHT ARROW
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        }
+        if (code == KeyEvent.VK_F) {
+        	shotKeyPressed = false;
         }
     }
 }

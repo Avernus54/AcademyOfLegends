@@ -37,7 +37,12 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//FPS
 	int FPS = 60;
-	
+	// answer dialogue
+	public String answer1 = "";
+	public String answer2 = "";
+	public int choiceIndex = 0;   // Which answer is highlighted
+	public int maxChoices = 0;
+	public int currentNPC = -1;
 	TileManager tileM = new TileManager(this);
 	public KeyHandler keyH = new KeyHandler(this);
 	Sounds soundeffects = new Sounds();
@@ -54,11 +59,11 @@ public class GamePanel extends JPanel implements Runnable{
 	public Entity obj[] = new Entity[10];
 	public Entity npc[] =  new Entity[10];
 	public Entity monster[] =  new Entity[20];
-	ArrayList<Entity> entityList = new ArrayList<>();
-	
+	public ArrayList<Entity> entityList = new ArrayList<>();
+	public ArrayList<Entity> projectileList = new ArrayList<>();
 	// GAME STATE
 	public int gameState;
-	public final int playState = 0;
+	public final int playState = 0;	
 	public  final int pauseState = 1;
 	public final int dialogueState = 2;
 	public final int characterState = 3;
@@ -146,6 +151,17 @@ public class GamePanel extends JPanel implements Runnable{
 				
 				}
 			}
+			for(int i = 0; i < projectileList.size(); i++) {
+				if(projectileList.get(i) != null) {
+					if(projectileList.get(i).alive == true) {
+						projectileList.get(i).update();
+					}
+					if(projectileList.get(i).alive == false) {
+						projectileList.remove(i);
+						}
+				
+				}
+			}
 		}
 		
 		if (gameState == pauseState) {
@@ -175,6 +191,11 @@ public class GamePanel extends JPanel implements Runnable{
 		for(int i = 0; i < monster.length;i++) {
 			if(monster[i] != null) {
 				entityList.add(monster[i]);
+			}
+		}
+		for(int i = 0; i < projectileList.size();i++) {
+			if(projectileList.get(i) != null) {
+				entityList.add(projectileList.get(i));
 			}
 		}
 		
